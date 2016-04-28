@@ -26,3 +26,10 @@ dependencies {
     testCompile 'org.assertj:assertj-core:3.4.1'
     testCompile 'junit:junit:4.12'
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
