@@ -107,12 +107,20 @@ public class TamagotchiTest {
         try {
             Thread.sleep(secondsToMilliseconds(seconds));
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new WaitException(e);
         }
     }
 
     private int secondsToMilliseconds(int seconds) {
         return seconds + 1000;
+    }
+
+    private static class WaitException extends RuntimeException {
+
+        public WaitException(Throwable cause) {
+            super(cause);
+        }
+
     }
 
 }
