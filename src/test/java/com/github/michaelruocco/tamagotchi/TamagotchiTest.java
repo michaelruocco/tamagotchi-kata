@@ -2,7 +2,9 @@ package com.github.michaelruocco.tamagotchi;
 
 import org.junit.Test;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class TamagotchiTest {
 
@@ -94,33 +96,11 @@ public class TamagotchiTest {
         assertThat(tamagotchi.getHungriness()).isEqualTo(hungriness);
         assertThat(tamagotchi.getHappiness()).isEqualTo(happiness);
 
-        wait(2000);
-
-        assertThat(tamagotchi.getTiredness()).isGreaterThan(tiredness);
-        assertThat(tamagotchi.getHungriness()).isGreaterThan(hungriness);
-        assertThat(tamagotchi.getHappiness()).isLessThan(happiness);
+        await().atMost(2, SECONDS).untilAsserted(() -> assertThat(tamagotchi.getTiredness()).isEqualTo(tiredness));
+        await().atMost(2, SECONDS).untilAsserted(() -> assertThat(tamagotchi.getHungriness()).isGreaterThan(hungriness));
+        await().atMost(2, SECONDS).untilAsserted(() -> assertThat(tamagotchi.getHappiness()).isLessThan(happiness));
 
         tamagotchi.stop();
-    }
-
-    private void wait(int seconds) {
-        try {
-            Thread.sleep(secondsToMilliseconds(seconds));
-        } catch (InterruptedException e) {
-            throw new WaitException(e);
-        }
-    }
-
-    private int secondsToMilliseconds(int seconds) {
-        return seconds + 1000;
-    }
-
-    private static class WaitException extends RuntimeException {
-
-        public WaitException(Throwable cause) {
-            super(cause);
-        }
-
     }
 
 }
